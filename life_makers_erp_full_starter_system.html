@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life Makers ERP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #f4f7fb;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #0f172a, #1e293b);
+    }
+
+    .sidebar-link {
+      transition: 0.25s;
+    }
+
+    .sidebar-link:hover,
+    .active-link {
+      background: rgba(255,255,255,0.1);
+      border-left: 4px solid #f59e0b;
+    }
+
+    .card-hover {
+      transition: 0.25s;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+    }
+
+    .hidden-page {
+      display: none;
+    }
+
+    .table-scroll {
+      max-height: 350px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center bg-slate-900 p-6">
+
+  <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl">
+
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-black text-slate-800">LM ERP</h1>
+      <p class="text-gray-500 mt-2">Life Makers Sharqia System</p>
+    </div>
+
+    <div class="space-y-5">
+
+      <div>
+        <label class="text-sm text-gray-600">Email</label>
+        <input id="email" type="email" placeholder="admin@lifemakers.org"
+          class="w-full mt-2 border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600">Password</label>
+        <input id="password" type="password" placeholder="••••••••"
+          class="w-full mt-2 border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+      </div>
+
+      <button onclick="login()"
+        class="w-full bg-slate-900 hover:bg-slate-700 text-white py-3 rounded-xl font-bold transition">
+        Login
+      </button>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-700">
+        Demo Login:<br>
+        admin@lm.org<br>
+        123456
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ERP SYSTEM -->
+<div id="erpSystem" class="hidden">
+
+<div class="flex min-h-screen">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar w-72 text-white p-5 hidden md:block">
+
+    <div class="mb-10">
+      <h1 class="text-3xl font-black text-amber-400">LM ERP</h1>
+      <p class="text-gray-400 text-sm mt-1">Life Makers Sharqia</p>
+    </div>
+
+    <nav class="space-y-2">
+
+      <button onclick="showPage('dashboard')" class="sidebar-link active-link w-full text-left px-4 py-3 rounded-xl">
+        <i class="fa-solid fa-chart-line mr-2"></i> Dashboard
+      </button>
+
+      <button onclick="showPage('employees')" class="sidebar-link w-full text-left px-4 py-3 rounded-xl">
+        <i class="fa-solid fa-users mr-2"></i> Employees
+      </button>
+
+      <button onclick="showPage('attendance')" class="sidebar-link w-full text-left px-4 py-3 rounded-xl">
+        <i class="fa-solid fa-user-check mr-2"></i> Attendance
+      </button>
+
+      <button onclick="showPage('inventory')" class="sidebar-link w-full text-left px-4 py-3 rounded-xl">
+        <i class="fa-solid fa-boxes-stacked mr-2"></i> Inventory
+      </button>
+
+      <button onclick="showPage('purchases')" class="sidebar-link w-full text-left px-4 py-3 rounded-xl">
+        <i class="fa-solid fa-cart-shopping mr-2"></i> Purchases
+      </button>
+
+      <button onclick="showPage('finance')" class="sidebar-link w-full text-left px-4 py-3 rounded-xl">
+        <i class="fa-solid fa-wallet mr-2"></i> Finance
+      </button>
+
+      <button onclick="showPage('reports')" class="sidebar-link w-full text-left px-4 py-3 rounded-xl">
+        <i class="fa-solid fa-file-lines mr-2"></i> Reports
+      </button>
+
+      <button onclick="logout()" class="sidebar-link w-full text-left px-4 py-3 rounded-xl text-red-300">
+        <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+      </button>
+
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 p-6 overflow-auto">
+
+    <!-- TOP -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-3xl font-black text-slate-800">Life Makers ERP</h2>
+        <p class="text-gray-500">Management System Dashboard</p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="bg-white shadow-sm border rounded-xl px-4 py-2">
+          <i class="fa-solid fa-calendar-days mr-2 text-amber-500"></i>
+          <span id="todayDate"></span>
+        </div>
+
+        <div class="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-slate-900 font-bold">
+          A
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page-section">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-500">Employees</p>
+              <h3 id="employeeCount" class="text-4xl font-black mt-2">0</h3>
+            </div>
+            <div class="bg-blue-100 text-blue-700 p-4 rounded-xl">
+              <i class="fa-solid fa-users text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-500">Inventory Items</p>
+              <h3 id="inventoryCount" class="text-4xl font-black mt-2">0</h3>
+            </div>
+            <div class="bg-green-100 text-green-700 p-4 rounded-xl">
+              <i class="fa-solid fa-boxes-stacked text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-500">Expenses</p>
+              <h3 class="text-4xl font-black mt-2">42K</h3>
+            </div>
+            <div class="bg-red-100 text-red-700 p-4 rounded-xl">
+              <i class="fa-solid fa-money-bill-wave text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border card-hover">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-gray-500">Revenue</p>
+              <h3 class="text-4xl font-black mt-2">120K</h3>
+            </div>
+            <div class="bg-amber-100 text-amber-700 p-4 rounded-xl">
+              <i class="fa-solid fa-chart-column text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border">
+          <h3 class="text-xl font-bold mb-5">Monthly Finance</h3>
+          <canvas id="financeChart"></canvas>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border">
+          <h3 class="text-xl font-bold mb-5">Departments</h3>
+          <canvas id="departmentChart"></canvas>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- EMPLOYEES -->
+    <section id="employees" class="page-section hidden-page">
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm border">
+
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-black">Employees</h3>
+
+          <div class="flex gap-3">
+            <input id="employeeName" placeholder="Employee Name"
+              class="border rounded-xl px-4 py-2">
+
+            <input id="employeeDepartment" placeholder="Department"
+              class="border rounded-xl px-4 py-2">
+
+            <button onclick="addEmployee()"
+              class="bg-slate-900 text-white px-5 rounded-xl hover:bg-slate-700">
+              Add
+            </button>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b text-left">
+                <th class="py-3">Name</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody id="employeeTable"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ATTENDANCE -->
+    <section id="attendance" class="page-section hidden-page">
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm border">
+
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-black">Attendance System</h3>
+
+          <button onclick="markAttendance()"
+            class="bg-green-600 text-white px-5 py-2 rounded-xl hover:bg-green-700">
+            Mark Attendance
+          </button>
+        </div>
+
+        <div id="attendanceLog" class="space-y-4"></div>
+
+      </div>
+
+    </section>
+
+    <!-- INVENTORY -->
+    <section id="inventory" class="page-section hidden-page">
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm border">
+
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-black">Inventory / Store</h3>
+
+          <div class="flex gap-3">
+            <input id="itemName" placeholder="Item Name"
+              class="border rounded-xl px-4 py-2">
+
+            <input id="itemQty" placeholder="Quantity"
+              class="border rounded-xl px-4 py-2">
+
+            <button onclick="addItem()"
+              class="bg-green-600 text-white px-5 rounded-xl hover:bg-green-700">
+              Add Item
+            </button>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b text-left">
+                <th class="py-3">Item</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody id="inventoryTable"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PURCHASES -->
+    <section id="purchases" class="page-section hidden-page">
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm border">
+
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-black">Purchases</h3>
+
+          <button onclick="addPurchase()"
+            class="bg-amber-500 text-white px-5 py-2 rounded-xl hover:bg-amber-600">
+            New Request
+          </button>
+        </div>
+
+        <div id="purchaseList" class="space-y-4"></div>
+
+      </div>
+
+    </section>
+
+    <!-- FINANCE -->
+    <section id="finance" class="page-section hidden-page">
+
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border">
+          <h3 class="text-2xl font-black mb-5">Treasury</h3>
+
+          <div class="space-y-4">
+
+            <div class="bg-green-50 border border-green-200 p-5 rounded-xl">
+              <p class="text-gray-500">Current Balance</p>
+              <h2 class="text-4xl font-black text-green-700 mt-2">185,000 EGP</h2>
+            </div>
+
+            <div class="bg-red-50 border border-red-200 p-5 rounded-xl">
+              <p class="text-gray-500">Expenses</p>
+              <h2 class="text-3xl font-black text-red-700 mt-2">42,000 EGP</h2>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border">
+          <h3 class="text-2xl font-black mb-5">Recent Transactions</h3>
+
+          <div class="space-y-4">
+
+            <div class="bg-gray-50 rounded-xl p-4 flex justify-between">
+              <div>
+                <h4 class="font-bold">Medical Convoy Expenses</h4>
+                <p class="text-sm text-gray-500">Today</p>
+              </div>
+              <span class="text-red-600 font-bold">-12,000</span>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4 flex justify-between">
+              <div>
+                <h4 class="font-bold">Donations Revenue</h4>
+                <p class="text-sm text-gray-500">Yesterday</p>
+              </div>
+              <span class="text-green-600 font-bold">+35,000</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- REPORTS -->
+    <section id="reports" class="page-section hidden-page">
+
+      <div class="bg-white rounded-2xl p-6 shadow-sm border">
+        <h3 class="text-2xl font-black mb-6">Reports Center</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <div class="bg-slate-900 text-white rounded-2xl p-6">
+            <i class="fa-solid fa-file-pdf text-3xl mb-4 text-amber-400"></i>
+            <h4 class="text-xl font-bold">HR Report</h4>
+            <p class="text-gray-300 mt-2 text-sm">Generate employees and attendance report.</p>
+          </div>
+
+          <div class="bg-green-700 text-white rounded-2xl p-6">
+            <i class="fa-solid fa-boxes-stacked text-3xl mb-4 text-white"></i>
+            <h4 class="text-xl font-bold">Inventory Report</h4>
+            <p class="text-green-100 mt-2 text-sm">Current stock and shortages report.</p>
+          </div>
+
+          <div class="bg-amber-500 text-white rounded-2xl p-6">
+            <i class="fa-solid fa-chart-pie text-3xl mb-4 text-white"></i>
+            <h4 class="text-xl font-bold">Finance Report</h4>
+            <p class="text-white/80 mt-2 text-sm">Revenue and expenses analytics.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+</div>
+
+<script>
+
+  // LOGIN
+  function login(){
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if(email === 'admin@lm.org' && password === '123456'){
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('erpSystem').classList.remove('hidden');
+    } else {
+      alert('Wrong Login Data');
+    }
+  }
+
+  function logout(){
+    location.reload();
+  }
+
+  // DATE
+  document.getElementById('todayDate').innerText = new Date().toLocaleDateString();
+
+  // PAGES
+  function showPage(pageId){
+
+    document.querySelectorAll('.page-section').forEach(section=>{
+      section.classList.add('hidden-page');
+    });
+
+    document.getElementById(pageId).classList.remove('hidden-page');
+  }
+
+  // EMPLOYEES
+  let employees = JSON.parse(localStorage.getItem('employees')) || [];
+
+  function renderEmployees(){
+
+    let table = document.getElementById('employeeTable');
+
+    table.innerHTML = '';
+
+    employees.forEach((emp,index)=>{
+
+      table.innerHTML += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-4">${emp.name}</td>
+          <td>${emp.department}</td>
+          <td>
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+              Active
+            </span>
+          </td>
+          <td>
+            <button onclick="deleteEmployee(${index})"
+              class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">
+              Delete
+            </button>
+          </td>
+        </tr>
+      `;
+
+    });
+
+    localStorage.setItem('employees', JSON.stringify(employees));
+
+    document.getElementById('employeeCount').innerText = employees.length;
+  }
+
+  function addEmployee(){
+
+    const name = document.getElementById('employeeName').value;
+    const department = document.getElementById('employeeDepartment').value;
+
+    if(name && department){
+      employees.push({name,department});
+      renderEmployees();
+
+      document.getElementById('employeeName').value='';
+      document.getElementById('employeeDepartment').value='';
+    }
+  }
+
+  function deleteEmployee(index){
+    employees.splice(index,1);
+    renderEmployees();
+  }
+
+  renderEmployees();
+
+  // INVENTORY
+  let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+
+  function renderInventory(){
+
+    let table = document.getElementById('inventoryTable');
+
+    table.innerHTML='';
+
+    inventory.forEach((item,index)=>{
+
+      let status = 'In Stock';
+      let color = 'green';
+
+      if(item.qty <= 5){
+        status = 'Low Stock';
+        color = 'yellow';
+      }
+
+      if(item.qty <= 0){
+        status = 'Out of Stock';
+        color = 'red';
+      }
+
+      table.innerHTML += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-4">${item.name}</td>
+          <td>${item.qty}</td>
+          <td>
+            <span class="bg-${color}-100 text-${color}-700 px-3 py-1 rounded-full text-sm">
+              ${status}
+            </span>
+          </td>
+          <td>
+            <button onclick="deleteItem(${index})"
+              class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">
+              Delete
+            </button>
+          </td>
+        </tr>
+      `;
+
+    });
+
+    localStorage.setItem('inventory', JSON.stringify(inventory));
+
+    document.getElementById('inventoryCount').innerText = inventory.length;
+  }
+
+  function addItem(){
+
+    const name = document.getElementById('itemName').value;
+    const qty = document.getElementById('itemQty').value;
+
+    if(name && qty){
+      inventory.push({name, qty});
+      renderInventory();
+
+      document.getElementById('itemName').value='';
+      document.getElementById('itemQty').value='';
+    }
+  }
+
+  function deleteItem(index){
+    inventory.splice(index,1);
+    renderInventory();
+  }
+
+  renderInventory();
+
+  // ATTENDANCE
+  function markAttendance(){
+
+    const log = document.getElementById('attendanceLog');
+
+    const div = document.createElement('div');
+
+    div.className = 'bg-gray-50 rounded-xl p-4 border';
+
+    div.innerHTML = `
+      <div class="flex justify-between items-center">
+        <div>
+          <h4 class="font-bold">Attendance Registered</h4>
+          <p class="text-sm text-gray-500">${new Date().toLocaleString()}</p>
+        </div>
+
+        <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm">
+          Success
+        </span>
+      </div>
+    `;
+
+    log.prepend(div);
+  }
+
+  // PURCHASES
+  function addPurchase(){
+
+    const list = document.getElementById('purchaseList');
+
+    const div = document.createElement('div');
+
+    div.className = 'bg-gray-50 p-5 rounded-xl border';
+
+    div.innerHTML = `
+      <div class="flex justify-between items-center">
+
+        <div>
+          <h4 class="font-bold text-lg">Purchase Request</h4>
+          <p class="text-gray-500 text-sm mt-1">Created ${new Date().toLocaleDateString()}</p>
+        </div>
+
+        <span class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full text-sm">
+          Pending Approval
+        </span>
+
+      </div>
+    `;
+
+    list.prepend(div);
+  }
+
+  // CHARTS
+  new Chart(document.getElementById('financeChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+      datasets: [{
+        label: 'Revenue',
+        data: [12000,22000,18000,40000,35000,52000],
+        borderColor: '#0f172a',
+        backgroundColor: 'rgba(15,23,42,0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    }
+  });
+
+  new Chart(document.getElementById('departmentChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['HR','Finance','Inventory','Media'],
+      datasets: [{
+        data: [20,30,25,25],
+        backgroundColor: [
+          '#2563eb',
+          '#16a34a',
+          '#f59e0b',
+          '#dc2626'
+        ]
+      }]
+    }
+  });
+
+</script>
+
+</body>
+</html>
