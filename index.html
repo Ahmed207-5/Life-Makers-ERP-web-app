@@ -5,458 +5,214 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Life Makers ERP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Cairo', sans-serif;
+:root {
+  --primary:   #1e40af;
+  --primary-h: #1d3a9e;
+  --accent:    #f59e0b;
+  --bg:        #f1f5f9;
+  --surface:   #ffffff;
+  --sidebar:   #1e293b;
+  --text:      #0f172a;
+  --text-muted:#64748b;
+  --border:    #e2e8f0;
+  --danger:    #dc2626;
+  --success:   #16a34a;
+  --radius:    14px;
+  --shadow:    0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
 }
 
-body {
-  background: #081225;
-  color: white;
-}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; }
+body { background:var(--bg); color:var(--text); }
 
-/* ───── LOGIN ───── */
+/* LOGIN */
 .login-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: radial-gradient(ellipse at 60% 40%, #0f2a5e 0%, #081225 70%);
+  display:flex; align-items:center; justify-content:center; min-height:100vh;
+  background:linear-gradient(135deg,#dbeafe 0%,#eff6ff 50%,#fef3c7 100%);
+}
+.login-card {
+  width:420px; background:var(--surface); border-radius:24px;
+  padding:44px 40px; box-shadow:0 20px 60px rgba(30,64,175,.15);
+}
+.login-logo { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+.login-logo-icon {
+  width:48px; height:48px; background:var(--primary); border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-size:20px; font-weight:800;
+}
+.login-logo h1 { font-size:22px; font-weight:800; color:var(--text); }
+.login-sub { color:var(--text-muted); font-size:13px; margin-bottom:30px; margin-top:4px; }
+.field-label { display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:6px; margin-top:18px; }
+
+input,select,textarea {
+  width:100%; padding:12px 14px; border-radius:10px;
+  border:1.5px solid var(--border); font-family:'Cairo',sans-serif;
+  font-size:14px; background:#f8fafc; color:var(--text);
+  transition:border-color .2s,box-shadow .2s;
+}
+input:focus,select:focus,textarea:focus {
+  outline:none; border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(30,64,175,.1); background:white;
 }
 
-.login-box {
-  width: 380px;
-  background: white;
-  color: #111;
-  padding: 36px 32px;
-  border-radius: 24px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+.btn-primary {
+  width:100%; padding:13px; background:var(--primary); color:white;
+  border:none; border-radius:10px; margin-top:22px;
+  font-family:'Cairo',sans-serif; font-weight:700; font-size:15px;
+  cursor:pointer; transition:background .2s,transform .1s;
+}
+.btn-primary:hover  { background:var(--primary-h); }
+.btn-primary:active { transform:scale(.98); }
+.btn-primary:disabled { opacity:.6; cursor:not-allowed; }
+
+.error-box {
+  background:#fef2f2; color:var(--danger); border:1px solid #fecaca;
+  border-radius:10px; padding:10px 14px; font-size:13px;
+  margin-top:14px; display:none;
 }
 
-.login-box .brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.login-box .brand-icon {
-  width: 40px;
-  height: 40px;
-  background: #0f172a;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #f59e0b;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.login-box h1 {
-  font-size: 26px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.login-box .subtitle {
-  color: #888;
-  font-size: 13px;
-  margin-bottom: 28px;
-  margin-top: 4px;
-}
-
-.form-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #444;
-  display: block;
-  margin-top: 16px;
-  margin-bottom: 4px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1.5px solid #e2e8f0;
-  font-family: 'Cairo', sans-serif;
-  font-size: 14px;
-  transition: border-color 0.2s;
-  background: #f8fafc;
-  color: #111;
-}
-
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: #0f172a;
-  background: white;
-}
-
-.btn {
-  background: #0f172a;
-  color: white;
-  border: none;
-  padding: 13px;
-  border-radius: 12px;
-  margin-top: 20px;
-  width: 100%;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 15px;
-  font-family: 'Cairo', sans-serif;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.btn:hover { background: #1e293b; }
-.btn:active { transform: scale(0.98); }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-.error-msg {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 13px;
-  margin-top: 14px;
-  display: none;
-}
-
-/* ───── DASHBOARD ───── */
-.dashboard {
-  display: none;
-}
+/* LAYOUT */
+.dashboard { display:none; }
 
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 240px;
-  height: 100vh;
-  background: #0b1629;
-  padding: 24px 16px;
-  overflow: auto;
-  border-right: 1px solid rgba(255,255,255,0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  position:fixed; left:0; top:0; width:240px; height:100vh;
+  background:var(--sidebar); padding:24px 14px;
+  display:flex; flex-direction:column; gap:2px; overflow-y:auto;
+}
+.sidebar-logo { padding:0 8px; margin-bottom:6px; }
+.sidebar-logo .name { font-size:20px; font-weight:800; color:var(--accent); }
+.sidebar-logo .sub  { font-size:11px; color:rgba(255,255,255,.4); margin-top:2px; }
+.sidebar-sep { height:1px; background:rgba(255,255,255,.08); margin:10px 0; }
+
+.nav-btn {
+  display:flex; align-items:center; gap:10px;
+  background:transparent; color:rgba(255,255,255,.6);
+  border:none; padding:10px 12px; border-radius:10px;
+  cursor:pointer; font-family:'Cairo',sans-serif;
+  font-size:14px; font-weight:500; width:100%; text-align:left;
+  transition:all .18s;
+}
+.nav-btn:hover  { background:rgba(255,255,255,.08); color:white; }
+.nav-btn.active { background:rgba(30,64,175,.5); color:#93c5fd; }
+.nav-btn .ico   { font-size:16px; width:22px; text-align:center; }
+.nav-btn.danger { color:rgba(248,113,113,.7); margin-top:auto; }
+.nav-btn.danger:hover { background:rgba(239,68,68,.12); color:#f87171; }
+
+/* MAIN */
+.main { margin-left:240px; padding:28px 32px; min-height:100vh; background:var(--bg); }
+.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:26px; }
+.topbar h1 { font-size:22px; font-weight:800; color:var(--text); }
+.role-badge {
+  padding:5px 14px; border-radius:999px; font-size:12px; font-weight:700;
+  background:#dbeafe; color:var(--primary); border:1px solid #bfdbfe;
 }
 
-.logo {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 8px;
-  color: #f59e0b;
-  padding: 0 8px;
-  letter-spacing: -0.5px;
+/* STAT CARDS */
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:16px; margin-bottom:26px; }
+.stat-card {
+  background:var(--surface); border-radius:var(--radius);
+  padding:22px; box-shadow:var(--shadow); border:1px solid var(--border);
+  transition:transform .2s,box-shadow .2s;
 }
+.stat-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.1); }
+.stat-card .s-icon { font-size:22px; margin-bottom:12px; }
+.stat-card .s-label { font-size:13px; color:var(--text-muted); font-weight:500; }
+.stat-card .s-value { font-size:36px; font-weight:800; color:var(--primary); margin-top:4px; line-height:1; }
 
-.logo span {
-  color: rgba(255,255,255,0.5);
-  font-weight: 400;
-  font-size: 12px;
-  display: block;
-  margin-top: 2px;
+/* PANEL */
+.panel {
+  background:var(--surface); border-radius:var(--radius);
+  padding:24px; box-shadow:var(--shadow); border:1px solid var(--border);
 }
-
-.sidebar-divider {
-  height: 1px;
-  background: rgba(255,255,255,0.07);
-  margin: 12px 0;
-}
-
-.menu-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: transparent;
-  color: rgba(255,255,255,0.65);
-  border: none;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-family: 'Cairo', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  width: 100%;
-  text-align: left;
-  transition: all 0.18s;
-  margin-top: 0;
-}
-
-.menu-btn:hover {
-  background: rgba(255,255,255,0.07);
-  color: white;
-}
-
-.menu-btn.active {
-  background: #1e3a5f;
-  color: #60a5fa;
-}
-
-.menu-btn .icon {
-  font-size: 16px;
-  width: 20px;
-  text-align: center;
-}
-
-.logout-btn {
-  margin-top: auto;
-  color: rgba(255,100,100,0.7) !important;
-}
-
-.logout-btn:hover {
-  background: rgba(255,50,50,0.1) !important;
-  color: #f87171 !important;
-}
-
-/* ───── MAIN ───── */
-.main {
-  margin-left: 240px;
-  padding: 28px 32px;
-  min-height: 100vh;
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
-}
-
-.topbar h1 {
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.badge {
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  background: #1e3a5f;
-  color: #60a5fa;
-  font-weight: 600;
-  border: 1px solid rgba(96,165,250,0.25);
-}
-
-/* ───── CARDS ───── */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 18px;
-  margin-bottom: 28px;
-}
-
-.card {
-  background: #111c35;
-  padding: 22px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.06);
-  transition: transform 0.2s;
-}
-
-.card:hover { transform: translateY(-2px); }
-
-.card p {
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
-}
-
-.card h2 {
-  font-size: 38px;
-  font-weight: 800;
-  margin-top: 6px;
-  color: #f59e0b;
-}
-
-/* ───── SECTIONS ───── */
-.section {
-  background: #111c35;
-  padding: 24px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.06);
-  margin-top: 20px;
-}
-
-.section h2 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  align-items: end;
-}
-
-.section input, .section select, .section textarea {
-  background: #0f172a;
-  border-color: rgba(255,255,255,0.1);
-  color: white;
-  margin-top: 0;
-}
-
-.section input::placeholder { color: rgba(255,255,255,0.3); }
-.section input:focus, .section select:focus {
-  border-color: #3b82f6;
-  background: #0f172a;
-}
-
-.section select option { background: #0f172a; }
+.panel-title { font-size:17px; font-weight:800; color:var(--text); margin-bottom:20px; }
+.form-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; align-items:end; }
+.form-row input,.form-row select { margin:0; }
 
 .add-btn {
-  background: #1d4ed8;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-family: 'Cairo', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  white-space: nowrap;
-  transition: background 0.2s;
-  margin-top: 0;
-  width: auto;
+  background:var(--primary); color:white; border:none;
+  padding:12px 18px; border-radius:10px;
+  font-family:'Cairo',sans-serif; font-weight:700; font-size:14px;
+  cursor:pointer; white-space:nowrap; transition:background .2s;
 }
+.add-btn:hover { background:var(--primary-h); }
 
-.add-btn:hover { background: #2563eb; }
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 22px;
-  font-size: 14px;
+/* TABLE */
+.data-table { width:100%; border-collapse:collapse; margin-top:20px; font-size:14px; }
+.data-table th {
+  padding:10px 14px; text-align:left; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.6px; color:var(--text-muted);
+  border-bottom:2px solid var(--border);
 }
+.data-table td { padding:12px 14px; border-bottom:1px solid var(--border); color:var(--text); }
+.data-table tr:last-child td { border-bottom:none; }
+.data-table tr:hover td { background:#f8fafc; }
+.tag-income  { color:var(--success); font-weight:600; }
+.tag-expense { color:var(--danger);  font-weight:600; }
 
-.table th {
-  padding: 10px 14px;
-  border-bottom: 2px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.5);
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
+/* PAGE SECTIONS */
+.page-section { display:none; }
+.page-section.active { display:block; }
+
+/* SPINNER */
+.spinner {
+  display:inline-block; width:15px; height:15px;
+  border:2px solid rgba(255,255,255,.4); border-top-color:white;
+  border-radius:50%; animation:spin .7s linear infinite;
+  vertical-align:middle; margin-right:6px;
 }
+@keyframes spin { to { transform:rotate(360deg); } }
 
-.table td {
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.85);
-}
-
-.table tr:last-child td { border-bottom: none; }
-.table tr:hover td { background: rgba(255,255,255,0.03); }
-
-.hidden { display: none; }
-
-.page-section { display: none; }
-.page-section.active { display: block; }
-
-/* ───── LOADING ───── */
-.loading-spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ───── RESPONSIVE ───── */
-@media (max-width: 900px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 12px;
-  }
-
-  .main { margin-left: 0; padding: 16px; }
-  .logo { width: 100%; margin-bottom: 4px; }
-  .sidebar-divider { display: none; }
-  .menu-btn { width: auto; flex: 0 0 auto; padding: 8px 12px; font-size: 12px; }
-  .logout-btn { margin-top: 0; }
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidebar { width:100%; height:auto; position:relative; flex-direction:row; flex-wrap:wrap; padding:12px 10px; }
+  .sidebar-logo { width:100%; }
+  .sidebar-sep  { display:none; }
+  .nav-btn { width:auto; flex:0 0 auto; padding:8px 10px; font-size:12px; }
+  .nav-btn.danger { margin-top:0; }
+  .main { margin-left:0; padding:16px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ LOGIN PAGE ═══ -->
+<!-- LOGIN -->
 <div class="login-page" id="loginPage">
-  <div class="login-box">
-    <div class="brand">
-      <div class="brand-icon">LM</div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">LM</div>
       <h1>Life Makers ERP</h1>
     </div>
-    <p class="subtitle">Sharqia Management System</p>
-
-    <label class="form-label" for="email">Email Address</label>
-    <input type="email" id="email" placeholder="you@example.com">
-
-    <label class="form-label" for="password">Password</label>
-    <input type="password" id="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') login()">
-
-    <div class="error-msg" id="loginError"></div>
-
-    <button class="btn" onclick="login()" id="loginBtn">Login</button>
+    <p class="login-sub">Sharqia Management System</p>
+    <label class="field-label">Email Address</label>
+    <input type="email" id="email" placeholder="admin@lifemakers.org">
+    <label class="field-label">Password</label>
+    <input type="password" id="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+    <div class="error-box" id="loginError"></div>
+    <button class="btn-primary" id="loginBtn" onclick="login()">Login</button>
   </div>
 </div>
 
-<!-- ═══ DASHBOARD ═══ -->
+<!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
-
   <div class="sidebar">
-    <div class="logo">LM ERP <span>Life Makers — Sharqia</span></div>
-    <div class="sidebar-divider"></div>
-
-    <button class="menu-btn active" onclick="showSection('overview', this)">
-      <span class="icon">📊</span> Dashboard
-    </button>
-    <button class="menu-btn" onclick="showSection('employees', this)">
-      <span class="icon">👥</span> Employees
-    </button>
-    <button class="menu-btn" onclick="showSection('attendance', this)">
-      <span class="icon">🕐</span> Attendance
-    </button>
-    <button class="menu-btn" onclick="showSection('inventory', this)">
-      <span class="icon">📦</span> Inventory
-    </button>
-    <button class="menu-btn" onclick="showSection('purchases', this)">
-      <span class="icon">🛒</span> Purchases
-    </button>
-    <button class="menu-btn" onclick="showSection('finance', this)">
-      <span class="icon">💰</span> Finance
-    </button>
-    <button class="menu-btn" onclick="showSection('tasks', this)">
-      <span class="icon">✅</span> Tasks
-    </button>
-    <button class="menu-btn" onclick="showSection('volunteers', this)">
-      <span class="icon">🤝</span> Volunteers
-    </button>
-
-    <div class="sidebar-divider"></div>
-    <button class="menu-btn logout-btn" onclick="logout()">
-      <span class="icon">🚪</span> Logout
-    </button>
+    <div class="sidebar-logo">
+      <div class="name">LM ERP</div>
+      <div class="sub">Life Makers — Sharqia</div>
+    </div>
+    <div class="sidebar-sep"></div>
+    <button class="nav-btn active" onclick="showSection('overview',this)"><span class="ico">📊</span> Dashboard</button>
+    <button class="nav-btn" onclick="showSection('employees',this)"><span class="ico">👥</span> Employees</button>
+    <button class="nav-btn" onclick="showSection('attendance',this)"><span class="ico">🕐</span> Attendance</button>
+    <button class="nav-btn" onclick="showSection('inventory',this)"><span class="ico">📦</span> Inventory</button>
+    <button class="nav-btn" onclick="showSection('purchases',this)"><span class="ico">🛒</span> Purchases</button>
+    <button class="nav-btn" onclick="showSection('finance',this)"><span class="ico">💰</span> Finance</button>
+    <button class="nav-btn" onclick="showSection('tasks',this)"><span class="ico">✅</span> Tasks</button>
+    <button class="nav-btn" onclick="showSection('volunteers',this)"><span class="ico">🤝</span> Volunteers</button>
+    <div class="sidebar-sep"></div>
+    <button class="nav-btn danger" onclick="logout()"><span class="ico">🚪</span> Logout</button>
   </div>
 
   <div class="main">
@@ -468,187 +224,147 @@ input:focus, select:focus, textarea:focus {
     <!-- OVERVIEW -->
     <div id="overview" class="page-section active">
       <div class="cards">
-        <div class="card">
-          <p>Employees</p>
-          <h2 id="employeesCount">—</h2>
-        </div>
-        <div class="card">
-          <p>Inventory Items</p>
-          <h2 id="inventoryCount">—</h2>
-        </div>
-        <div class="card">
-          <p>Purchases</p>
-          <h2 id="purchaseCount">—</h2>
-        </div>
-        <div class="card">
-          <p>Finance Records</p>
-          <h2 id="financeCount">—</h2>
-        </div>
+        <div class="stat-card"><div class="s-icon">👥</div><div class="s-label">Employees</div><div class="s-value" id="employeesCount">—</div></div>
+        <div class="stat-card"><div class="s-icon">📦</div><div class="s-label">Inventory Items</div><div class="s-value" id="inventoryCount">—</div></div>
+        <div class="stat-card"><div class="s-icon">🛒</div><div class="s-label">Purchases</div><div class="s-value" id="purchaseCount">—</div></div>
+        <div class="stat-card"><div class="s-icon">💰</div><div class="s-label">Finance Records</div><div class="s-value" id="financeCount">—</div></div>
       </div>
     </div>
 
     <!-- EMPLOYEES -->
     <div id="employees" class="page-section">
-      <div class="section">
-        <h2>👥 Employees</h2>
+      <div class="panel">
+        <div class="panel-title">👥 Employees</div>
         <div class="form-row">
           <input id="empName" placeholder="Employee Name">
           <input id="empDepartment" placeholder="Department">
           <input id="empSalary" placeholder="Salary" type="number">
-          <button class="add-btn" onclick="addEmployee()">+ Add Employee</button>
+          <button class="add-btn" onclick="addEmployee()">+ Add</button>
         </div>
-        <table class="table" id="employeesTable"></table>
+        <table class="data-table" id="employeesTable"></table>
       </div>
     </div>
 
     <!-- ATTENDANCE -->
     <div id="attendance" class="page-section">
-      <div class="section">
-        <h2>🕐 Attendance</h2>
+      <div class="panel">
+        <div class="panel-title">🕐 Attendance</div>
         <div class="form-row">
           <input id="attName" placeholder="Employee Name">
-          <select id="attType">
-            <option value="Check In">Check In</option>
-            <option value="Check Out">Check Out</option>
-          </select>
-          <button class="add-btn" onclick="addAttendance()">+ Save Attendance</button>
+          <select id="attType"><option value="Check In">Check In</option><option value="Check Out">Check Out</option></select>
+          <button class="add-btn" onclick="addAttendance()">+ Save</button>
         </div>
-        <table class="table" id="attendanceTable"></table>
+        <table class="data-table" id="attendanceTable"></table>
       </div>
     </div>
 
     <!-- INVENTORY -->
     <div id="inventory" class="page-section">
-      <div class="section">
-        <h2>📦 Inventory</h2>
+      <div class="panel">
+        <div class="panel-title">📦 Inventory</div>
         <div class="form-row">
           <input id="itemName" placeholder="Item Name">
           <input id="itemQty" placeholder="Quantity" type="number">
-          <button class="add-btn" onclick="addInventory()">+ Add Item</button>
+          <button class="add-btn" onclick="addInventory()">+ Add</button>
         </div>
-        <table class="table" id="inventoryTable"></table>
+        <table class="data-table" id="inventoryTable"></table>
       </div>
     </div>
 
     <!-- PURCHASES -->
     <div id="purchases" class="page-section">
-      <div class="section">
-        <h2>🛒 Purchases</h2>
+      <div class="panel">
+        <div class="panel-title">🛒 Purchases</div>
         <div class="form-row">
           <input id="purchaseItem" placeholder="Purchase Item">
           <input id="purchaseCost" placeholder="Estimated Cost" type="number">
-          <button class="add-btn" onclick="addPurchase()">+ Create Purchase</button>
+          <button class="add-btn" onclick="addPurchase()">+ Add</button>
         </div>
-        <table class="table" id="purchasesTable"></table>
+        <table class="data-table" id="purchasesTable"></table>
       </div>
     </div>
 
     <!-- FINANCE -->
     <div id="finance" class="page-section">
-      <div class="section">
-        <h2>💰 Finance</h2>
+      <div class="panel">
+        <div class="panel-title">💰 Finance</div>
         <div class="form-row">
           <input id="financeDesc" placeholder="Description">
           <input id="financeAmount" placeholder="Amount" type="number">
-          <select id="financeType">
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
-          <button class="add-btn" onclick="addFinance()">+ Save Record</button>
+          <select id="financeType"><option value="income">Income</option><option value="expense">Expense</option></select>
+          <button class="add-btn" onclick="addFinance()">+ Save</button>
         </div>
-        <table class="table" id="financeTable"></table>
+        <table class="data-table" id="financeTable"></table>
       </div>
     </div>
 
     <!-- TASKS -->
     <div id="tasks" class="page-section">
-      <div class="section">
-        <h2>✅ Tasks</h2>
+      <div class="panel">
+        <div class="panel-title">✅ Tasks</div>
         <div class="form-row">
           <input id="taskTitle" placeholder="Task Title">
           <input id="taskAssigned" placeholder="Assigned To">
-          <button class="add-btn" onclick="addTask()">+ Add Task</button>
+          <button class="add-btn" onclick="addTask()">+ Add</button>
         </div>
-        <table class="table" id="tasksTable"></table>
+        <table class="data-table" id="tasksTable"></table>
       </div>
     </div>
 
     <!-- VOLUNTEERS -->
     <div id="volunteers" class="page-section">
-      <div class="section">
-        <h2>🤝 Volunteers</h2>
+      <div class="panel">
+        <div class="panel-title">🤝 Volunteers</div>
         <div class="form-row">
           <input id="volName" placeholder="Volunteer Name">
           <input id="volPhone" placeholder="Phone">
-          <button class="add-btn" onclick="addVolunteer()">+ Add Volunteer</button>
+          <button class="add-btn" onclick="addVolunteer()">+ Add</button>
         </div>
-        <table class="table" id="volunteersTable"></table>
+        <table class="data-table" id="volunteersTable"></table>
       </div>
     </div>
 
-  </div><!-- /main -->
-</div><!-- /dashboard -->
-
+  </div>
+</div>
 
 <script>
-// ══════════════════════════════════════════════════
-//  ⚠️  استبدل الـ ANON KEY ده بالـ key الصح من
-//     Supabase Dashboard → Settings → API → anon public
-// ══════════════════════════════════════════════════
-const SUPABASE_URL     = "https://bgowbzfqeniywumgjdku.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnb3diemZxZW5peXd1bWdqZGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2OTk1OTEsImV4cCI6MjA5NDI3NTU5MX0.d3V0VDBgAweJ7fqfrLVzWLFpRpPmR9uK2n7W5LoYDlg"; // ← غيّر ده
+// ⚠️ غيّر السطر ده بالـ anon key من Supabase → Settings → API
+const SUPABASE_URL      = "https://bgowbzfqeniywumgjdku.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnb3diemZxZW5peXd1bWdqZGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2OTk1OTEsImV4cCI6MjA5NDI3NTU5MX0.d3V0VDBgAweJ7fqfrLVzWLFpRpPmR9uK2n7W5LoYDlg";
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ───── AUTH ─────
 async function login() {
   const email    = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   const btn      = document.getElementById('loginBtn');
   const errBox   = document.getElementById('loginError');
-
   errBox.style.display = 'none';
-
-  if (!email || !password) {
-    showError('Please enter your email and password.');
-    return;
-  }
-
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loading-spinner"></span> Logging in…';
-
-  // ✅ Supabase Auth — الطريقة الصح
+  if (!email || !password) { showErr('Please enter email and password.'); return; }
+  btn.disabled  = true;
+  btn.innerHTML = '<span class="spinner"></span>Logging in…';
   const { data, error } = await db.auth.signInWithPassword({ email, password });
-
   if (error || !data?.user) {
-    btn.disabled = false;
+    btn.disabled  = false;
     btn.innerHTML = 'Login';
-    showError(error?.message || 'Invalid email or password.');
+    showErr(error?.message || 'Invalid email or password.');
     return;
   }
-
-  // جيب بيانات اليوزر من جدول users (لو موجود)
-  const { data: userData } = await db
-    .from('users')
-    .select('*')
-    .eq('email', email)
-    .maybeSingle();
-
+  const { data: userData } = await db.from('users').select('*').eq('email', email).maybeSingle();
   const userInfo = {
-    name: userData?.name || data.user.email,
-    role: userData?.role || 'User',
+    name:  userData?.name  || data.user.email,
+    role:  userData?.role  || 'User',
     email: data.user.email
   };
-
   localStorage.setItem('lm_user', JSON.stringify(userInfo));
   enterDashboard(userInfo);
 }
 
-function enterDashboard(userInfo) {
-  document.getElementById('loginPage').style.display   = 'none';
-  document.getElementById('dashboard').style.display   = 'flex';
-  document.getElementById('welcomeText').innerText      = 'Welcome, ' + userInfo.name;
-  document.getElementById('userRole').innerHTML         = `<span class="badge">${userInfo.role}</span>`;
+function enterDashboard(u) {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'flex';
+  document.getElementById('welcomeText').innerText    = 'Welcome, ' + u.name;
+  document.getElementById('userRole').innerHTML       = `<span class="role-badge">${u.role}</span>`;
   loadAllData();
 }
 
@@ -658,57 +374,42 @@ async function logout() {
   location.reload();
 }
 
-function showError(msg) {
-  const box = document.getElementById('loginError');
-  box.textContent    = msg;
-  box.style.display  = 'block';
+function showErr(msg) {
+  const b = document.getElementById('loginError');
+  b.textContent = msg; b.style.display = 'block';
 }
 
-// ───── NAV ─────
 function showSection(id, btn) {
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (btn) btn.classList.add('active');
-  document.getElementById('welcomeText').innerText =
-    btn?.querySelector('.icon')?.nextSibling?.textContent?.trim() || 'Dashboard';
+  const label = btn?.querySelector('.ico')?.nextSibling?.textContent?.trim();
+  document.getElementById('welcomeText').innerText = label || 'Dashboard';
 }
 
-// ───── DATA ─────
 async function loadAllData() {
-  loadEmployees();
-  loadAttendance();
-  loadInventory();
-  loadPurchases();
-  loadFinance();
-  loadTasks();
-  loadVolunteers();
+  loadEmployees(); loadAttendance(); loadInventory();
+  loadPurchases(); loadFinance(); loadTasks(); loadVolunteers();
 }
 
-// Employees
 async function addEmployee() {
-  const name  = document.getElementById('empName').value.trim();
-  const dept  = document.getElementById('empDepartment').value.trim();
-  const sal   = document.getElementById('empSalary').value;
+  const name = document.getElementById('empName').value.trim();
+  const dept = document.getElementById('empDepartment').value.trim();
+  const sal  = document.getElementById('empSalary').value;
   if (!name) return;
   await db.from('employees').insert({ name, department: dept, salary: sal });
-  document.getElementById('empName').value = '';
-  document.getElementById('empDepartment').value = '';
-  document.getElementById('empSalary').value = '';
+  ['empName','empDepartment','empSalary'].forEach(id => document.getElementById(id).value='');
   loadEmployees();
 }
-
 async function loadEmployees() {
-  const { data } = await db.from('employees').select('*').order('id', { ascending: false });
-  let html = `<tr><th>Name</th><th>Department</th><th>Salary</th></tr>`;
-  data?.forEach(r => {
-    html += `<tr><td>${r.name||''}</td><td>${r.department||'—'}</td><td>${r.salary||0}</td></tr>`;
-  });
-  document.getElementById('employeesTable').innerHTML = html;
+  const { data } = await db.from('employees').select('*').order('id',{ascending:false});
+  let h = `<tr><th>Name</th><th>Department</th><th>Salary</th></tr>`;
+  data?.forEach(r => { h += `<tr><td>${r.name||''}</td><td>${r.department||'—'}</td><td>${r.salary||0}</td></tr>`; });
+  document.getElementById('employeesTable').innerHTML = h;
   document.getElementById('employeesCount').innerText = data?.length ?? 0;
 }
 
-// Attendance
 async function addAttendance() {
   const name = document.getElementById('attName').value.trim();
   const type = document.getElementById('attType').value;
@@ -717,138 +418,102 @@ async function addAttendance() {
   document.getElementById('attName').value = '';
   loadAttendance();
 }
-
 async function loadAttendance() {
-  const { data } = await db.from('attendance').select('*').order('id', { ascending: false });
-  let html = `<tr><th>Name</th><th>Type</th></tr>`;
-  data?.forEach(r => {
-    html += `<tr><td>${r.employee_name||''}</td><td>${r.type||''}</td></tr>`;
-  });
-  document.getElementById('attendanceTable').innerHTML = html;
+  const { data } = await db.from('attendance').select('*').order('id',{ascending:false});
+  let h = `<tr><th>Name</th><th>Type</th></tr>`;
+  data?.forEach(r => { h += `<tr><td>${r.employee_name||''}</td><td>${r.type||''}</td></tr>`; });
+  document.getElementById('attendanceTable').innerHTML = h;
 }
 
-// Inventory
 async function addInventory() {
   const name = document.getElementById('itemName').value.trim();
   const qty  = document.getElementById('itemQty').value;
   if (!name) return;
   await db.from('inventory').insert({ name, quantity: qty });
-  document.getElementById('itemName').value = '';
-  document.getElementById('itemQty').value  = '';
+  ['itemName','itemQty'].forEach(id => document.getElementById(id).value='');
   loadInventory();
 }
-
 async function loadInventory() {
-  const { data } = await db.from('inventory').select('*').order('id', { ascending: false });
-  let html = `<tr><th>Item</th><th>Quantity</th></tr>`;
-  data?.forEach(r => {
-    html += `<tr><td>${r.name||''}</td><td>${r.quantity||0}</td></tr>`;
-  });
-  document.getElementById('inventoryTable').innerHTML = html;
+  const { data } = await db.from('inventory').select('*').order('id',{ascending:false});
+  let h = `<tr><th>Item</th><th>Quantity</th></tr>`;
+  data?.forEach(r => { h += `<tr><td>${r.name||''}</td><td>${r.quantity||0}</td></tr>`; });
+  document.getElementById('inventoryTable').innerHTML = h;
   document.getElementById('inventoryCount').innerText = data?.length ?? 0;
 }
 
-// Purchases
 async function addPurchase() {
   const item = document.getElementById('purchaseItem').value.trim();
   const cost = document.getElementById('purchaseCost').value;
   if (!item) return;
   await db.from('purchases').insert({ item, estimated_cost: cost });
-  document.getElementById('purchaseItem').value = '';
-  document.getElementById('purchaseCost').value = '';
+  ['purchaseItem','purchaseCost'].forEach(id => document.getElementById(id).value='');
   loadPurchases();
 }
-
 async function loadPurchases() {
-  const { data } = await db.from('purchases').select('*').order('id', { ascending: false });
-  let html = `<tr><th>Item</th><th>Estimated Cost</th></tr>`;
-  data?.forEach(r => {
-    html += `<tr><td>${r.item||''}</td><td>${r.estimated_cost||0}</td></tr>`;
-  });
-  document.getElementById('purchasesTable').innerHTML = html;
+  const { data } = await db.from('purchases').select('*').order('id',{ascending:false});
+  let h = `<tr><th>Item</th><th>Estimated Cost</th></tr>`;
+  data?.forEach(r => { h += `<tr><td>${r.item||''}</td><td>${r.estimated_cost||0}</td></tr>`; });
+  document.getElementById('purchasesTable').innerHTML = h;
   document.getElementById('purchaseCount').innerText  = data?.length ?? 0;
 }
 
-// Finance
 async function addFinance() {
   const desc   = document.getElementById('financeDesc').value.trim();
   const amount = document.getElementById('financeAmount').value;
   const type   = document.getElementById('financeType').value;
   if (!desc) return;
   await db.from('finance').insert({ description: desc, amount, type });
-  document.getElementById('financeDesc').value   = '';
-  document.getElementById('financeAmount').value = '';
+  ['financeDesc','financeAmount'].forEach(id => document.getElementById(id).value='');
   loadFinance();
 }
-
 async function loadFinance() {
-  const { data } = await db.from('finance').select('*').order('id', { ascending: false });
-  let html = `<tr><th>Description</th><th>Amount</th><th>Type</th></tr>`;
+  const { data } = await db.from('finance').select('*').order('id',{ascending:false});
+  let h = `<tr><th>Description</th><th>Amount</th><th>Type</th></tr>`;
   data?.forEach(r => {
-    const badge = r.type === 'income'
-      ? `<span style="color:#34d399">${r.type}</span>`
-      : `<span style="color:#f87171">${r.type}</span>`;
-    html += `<tr><td>${r.description||''}</td><td>${r.amount||0}</td><td>${badge}</td></tr>`;
+    const cls = r.type==='income' ? 'tag-income' : 'tag-expense';
+    h += `<tr><td>${r.description||''}</td><td>${r.amount||0}</td><td><span class="${cls}">${r.type}</span></td></tr>`;
   });
-  document.getElementById('financeTable').innerHTML = html;
+  document.getElementById('financeTable').innerHTML = h;
   document.getElementById('financeCount').innerText = data?.length ?? 0;
 }
 
-// Tasks
 async function addTask() {
   const title    = document.getElementById('taskTitle').value.trim();
   const assigned = document.getElementById('taskAssigned').value.trim();
   if (!title) return;
   await db.from('tasks').insert({ title, assigned_name: assigned });
-  document.getElementById('taskTitle').value    = '';
-  document.getElementById('taskAssigned').value = '';
+  ['taskTitle','taskAssigned'].forEach(id => document.getElementById(id).value='');
   loadTasks();
 }
-
 async function loadTasks() {
-  const { data } = await db.from('tasks').select('*').order('id', { ascending: false });
-  let html = `<tr><th>Task</th><th>Assigned To</th></tr>`;
-  data?.forEach(r => {
-    html += `<tr><td>${r.title||''}</td><td>${r.assigned_name||'—'}</td></tr>`;
-  });
-  document.getElementById('tasksTable').innerHTML = html;
+  const { data } = await db.from('tasks').select('*').order('id',{ascending:false});
+  let h = `<tr><th>Task</th><th>Assigned To</th></tr>`;
+  data?.forEach(r => { h += `<tr><td>${r.title||''}</td><td>${r.assigned_name||'—'}</td></tr>`; });
+  document.getElementById('tasksTable').innerHTML = h;
 }
 
-// Volunteers
 async function addVolunteer() {
   const name  = document.getElementById('volName').value.trim();
   const phone = document.getElementById('volPhone').value.trim();
   if (!name) return;
   await db.from('volunteers').insert({ name, phone });
-  document.getElementById('volName').value  = '';
-  document.getElementById('volPhone').value = '';
+  ['volName','volPhone'].forEach(id => document.getElementById(id).value='');
   loadVolunteers();
 }
-
 async function loadVolunteers() {
-  const { data } = await db.from('volunteers').select('*').order('id', { ascending: false });
-  let html = `<tr><th>Name</th><th>Phone</th></tr>`;
-  data?.forEach(r => {
-    html += `<tr><td>${r.name||''}</td><td>${r.phone||'—'}</td></tr>`;
-  });
-  document.getElementById('volunteersTable').innerHTML = html;
+  const { data } = await db.from('volunteers').select('*').order('id',{ascending:false});
+  let h = `<tr><th>Name</th><th>Phone</th></tr>`;
+  data?.forEach(r => { h += `<tr><td>${r.name||''}</td><td>${r.phone||'—'}</td></tr>`; });
+  document.getElementById('volunteersTable').innerHTML = h;
 }
 
-// ───── INIT ─────
 window.onload = async () => {
-  // تحقق من Supabase session أولاً
   const { data: { session } } = await db.auth.getSession();
-
   if (session) {
     const saved = localStorage.getItem('lm_user');
-    if (saved) {
-      enterDashboard(JSON.parse(saved));
-    } else {
-      const userInfo = { name: session.user.email, role: 'User', email: session.user.email };
-      enterDashboard(userInfo);
-    }
+    enterDashboard(saved ? JSON.parse(saved) : { name: session.user.email, role: 'User', email: session.user.email });
   }
 };
 </script>
 </body>
-</html>
+            </html>
